@@ -1,12 +1,12 @@
 
 FusionPBX Install
 --------------------------------------
-A quick install guide for a FusionPBX install. It is recommended to start the install on a minimal install.
+A quick install guide for a FusionPBX install. It is recommended to start the install on a minimal install of the operating system.
+Fork for samael33 version (actually change git links) is done only for debian.
 
 
 ### Debian
-Debian is the preferred operating system by the FreeSWITCH developers. 
-It supports the latest video dependencies. If you want to do video mixing use Debian.
+Debian 8 is the preferred operating system by the FreeSWITCH developers. It supports the latest video dependencies. If you want to do video mixing use Debian. Download Debian 8 Jessie from here https://cdimage.debian.org/cdimage/archive/
 
 ```sh
 wget -O - https://raw.githubusercontent.com/samael33/fusionpbx-install.sh/master/debian/pre-install.sh | sh
@@ -38,4 +38,18 @@ CentOS operating system is a requirement for some companies. Don't expect video 
 ```sh
 wget -O - https://raw.githubusercontent.com/samael33/fusionpbx-install.sh/master/centos/pre-install.sh | sh
 cd /usr/src/fusionpbx-install.sh/centos && ./install.sh
+```
+
+### Windows
+*  This powershell install for windows is currently in a "beta stage".
+*  mod_lua is missing from builds after 1.6.14. Script will download it from github.
+*  Click to download the zip file and extract it.
+*  Extract the zip file
+*  Navigate to install.ps1
+*  Click on install.ps1 then right click on install.ps1 then choose Run with Powershell 
+*  If you are not already Administrator you will have to choose run as Administrator
+
+```sh
+
+Master https://github.com/samael33/fusionpbx-install.sh/archive/master.zip
 ```

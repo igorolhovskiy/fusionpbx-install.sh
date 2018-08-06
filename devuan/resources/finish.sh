@@ -19,12 +19,20 @@ fi
 verbose "Create the database and users"
 
 #
-# Install the database backup
+# Install the database backup scripts
 #
 
 cp backup/fusionpbx-backup.sh /etc/cron.daily
 chmod 755 /etc/cron.daily/fusionpbx-backup.sh
 sed -i "s/zzz/${database_password}/g" /etc/cron.daily/fusionpbx-backup.sh
+
+#
+# Install the maintenance script
+#
+
+cp backup/fusionpbx-maintenance.sh /etc/cron.daily
+chmod 755 /etc/cron.daily/fusionpbx-maintenance.sh
+sed -i "s/zzz/${database_password}/g" /etc/cron.daily/fusionpbx-maintenance.sh
 
 #
 # Move to /tmp to prevent a red herring error when running sudo with psql
@@ -140,10 +148,14 @@ echo "   Official FusionPBX Training"
 echo "      Fastest way to learn FusionPBX. For more information https://www.fusionpbx.com."
 echo "      Available online and in person. Includes documentation and recording."
 echo ""
-echo "      Admin Training    12 - 13 June 2017 (2 Days)"
-echo "      Advanced Training 14 - 15 June 2017 (2 Days)"
+echo "      Location:               Online"
+echo "      Admin Training:          7 -  9 August 2018 (3 Days)"
+echo "      Advanced Training:      21 - 22 August 2018 (2 Days)"
+echo "      Continuing Education:        19 July   2018 (1 Day)"
+echo "      Timezone:               https://www.timeanddate.com/weather/usa/boise"
 echo ""
 echo "   Additional information."
+echo "      https://fusionpbx.com/training.php"
 echo "      https://fusionpbx.com/support.php"
 echo "      https://www.fusionpbx.com"
 echo "      http://docs.fusionpbx.com"

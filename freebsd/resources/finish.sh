@@ -49,12 +49,18 @@ if [ .$nginx_enabled = .'true' ]; then
 	#get the ip address
 	local_ip_v4=$(ifconfig $interface_name | grep 'inet ' | awk '{print $2}')
 
-	#get the domain settings
-	domain_uuid=$(uuidgen);
-	domain_name=$(ifconfig $interface_name | grep 'inet ' | awk '{print $2}')
-
 	#get the server hostname
-	#domain_name=$(hostname -f)
+	if [ .$domain_name = .'hostname' ]; then
+		domain_name=$(hostname -f)
+	fi
+
+	#get the ip address
+	if [ .$domain_name = .'ip_address' ]; then
+		domain_name=$(ifconfig $interface_name | grep 'inet ' | awk '{print $2}')
+	fi
+
+	#get the domain uuid
+	domain_uuid=$(uuidgen);
 
 	#add the domain name
 	psql --host=$database_host --port=$database_port --username=$database_username -c "insert into v_domains (domain_uuid, domain_name, domain_enabled) values('$domain_uuid', '$domain_name', 'true');"
@@ -84,7 +90,7 @@ if [ .$nginx_enabled = .'true' ]; then
 	psql --host=$database_host --port=$database_port --username=$database_username -c "insert into v_group_users (group_user_uuid, domain_uuid, group_name, group_uuid, user_uuid) values('$group_user_uuid', '$domain_uuid', '$group_name', '$group_uuid', '$user_uuid');"
 
 	#add the local_ip_v4 address
-	psql --host=$database_host --port=$database_port --username=$database_username -t -c "insert into v_vars (var_uuid, var_name, var_value, var_cat, var_order, var_enabled) values ('4507f7a9-2cbb-40a6-8799-f8f168082585', 'local_ip_v4', '$local_ip_v4', 'Defaults', '0', 'true');";
+	psql --host=$database_host --port=$database_port --username=$database_username -t -c "insert into v_vars (var_uuid, var_name, var_value, var_category, var_order, var_enabled) values ('4507f7a9-2cbb-40a6-8799-f8f168082585', 'local_ip_v4', '$local_ip_v4', 'Defaults', '0', 'true');";
 
 	#app defaults
 	if [ .$nginx_enabled = .'true' ]; then
@@ -117,7 +123,7 @@ if [ .$switch_enabled = .'true' ]; then
 	sed -i' ' -e s:"{v_pass}:$xml_cdr_password:" $conf_dir/autoload_configs/xml_cdr.conf.xml
 
 	#stop freeswitch
-	service freeswitch restart
+	#service freeswitch restart
 
 	#install monit.sh
 	if [ .$monit_enabled = .'true' ]; then
@@ -141,16 +147,18 @@ if [ .$nginx_enabled = .'true' ]; then
 	echo "      username: $user_name@$domain_name";
 	echo ""
 fi
-#echo "   Official FusionPBX Training"
-#echo "      Fastest way to learn FusionPBX. For more information https://www.fusionpbx.com."
-#echo "      Available online and in person. Includes documentation and recording."
-#echo ""
-#echo "      Location          Online"
-#echo "      Admin Training    12 - 13 June 2017 (2 Days)"
-#echo "      Advanced Training 14 - 15 June 2017 (2 Days)"
-#echo "      Timezone: https://www.timeanddate.com/worldclock/usa/boise"
-#echo ""
+echo "   Official FusionPBX Training"
+echo "      Fastest way to learn FusionPBX. For more information https://www.fusionpbx.com."
+echo "      Available online and in person. Includes documentation and recording."
+echo ""
+echo "      Location:               Online"
+echo "      Admin Training:          7 -  9 August 2018 (3 Days)"
+echo "      Advanced Training:      21 - 22 August 2018 (2 Days)"
+echo "      Continuing Education:        19 July   2018 (1 Day)"
+echo "      Timezone:               https://www.timeanddate.com/weather/usa/boise"
+echo ""
 echo "   Additional information."
+echo "      https://fusionpbx.com/training.php"
 echo "      https://fusionpbx.com/support.php"
 echo "      https://www.fusionpbx.com"
 echo "      http://docs.fusionpbx.com"

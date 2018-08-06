@@ -13,7 +13,7 @@ sed -i '/cdrom:/d' /etc/apt/sources.list
 
 #Update to latest packages
 verbose "Update installed packages"
-apt-get upgrade && apt-get update -y --force-yes
+apt-get update && apt-get upgrade -y --force-yes
 
 #Add dependencies
 apt-get install -y lsb-release
@@ -40,7 +40,7 @@ resources/fail2ban.sh
 resources/switch.sh
 
 #Postgres
-resources/postgres.sh
+resources/postgresql.sh
 
 #set the ip address
 server_address=$(hostname -I)
@@ -51,7 +51,7 @@ if [ ."$php_version" = ."5" ]; then
         systemctl restart php5-fpm
 fi
 if [ ."$php_version" = ."7" ]; then
-        systemctl restart php7.0-fpm
+        systemctl restart php7.1-fpm
 fi
 systemctl restart nginx
 systemctl restart fail2ban

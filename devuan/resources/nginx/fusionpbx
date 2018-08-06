@@ -1,5 +1,5 @@
 
-server{
+server {
 	listen 127.0.0.1:80;
 	server_name 127.0.0.1;
 	access_log /var/log/nginx/access.log;
@@ -46,7 +46,7 @@ server{
 server {
 	listen 80;
 	server_name fusionpbx;
-	if ($uri !~* ^.*provision.*$) {
+	if ($uri !~* ^.*(provision|xml_cdr).*$) {
 		rewrite ^(.*) https://$host$1 permanent;
 		break;
 	}

@@ -6,7 +6,6 @@ cd "$(dirname "$0")"
 #includes
 . ./config.sh
 . ./colors.sh
-. ./environment.sh
 
 #database details
 database_host=127.0.0.1
@@ -34,12 +33,16 @@ sed -i /etc/fusionpbx/config.php -e s:"{database_password}:$database_password:"
 cd /var/www/fusionpbx && php /var/www/fusionpbx/core/upgrade/upgrade_schema.php > /dev/null 2>&1
 
 #get the server hostname
-#domain_name=$(hostname -f)
+if [ .$domain_name = .'hostname' ]; then
+	domain_name=$(hostname -f)
+fi
 
 #get the ip address
-domain_name=$(hostname -I | cut -d ' ' -f1)
+if [ .$domain_name = .'ip_address' ]; then
+	domain_name=$(hostname -I | cut -d ' ' -f1)
+fi
 
-#get a domain_uuid
+#get the domain_uuid
 domain_uuid=$(/usr/bin/php /var/www/fusionpbx/resources/uuid.php);
 
 #add the domain name
@@ -103,12 +106,14 @@ echo "   Official FusionPBX Training"
 echo "      Fastest way to learn FusionPBX. For more information https://www.fusionpbx.com."
 echo "      Available online and in person. Includes documentation and recording."
 echo ""
-echo "      Location          Online"
-echo "      Admin Training    12 - 13 June 2017 (2 Days)"
-echo "      Advanced Training 14 - 15 June 2017 (2 Days)"
-#echo "      Timezone: https://www.timeanddate.com/worldclock/usa/boise"
+echo "      Location:               Online"
+echo "      Admin Training:          7 -  9 August 2018 (3 Days)"
+echo "      Advanced Training:      21 - 22 August 2018 (2 Days)"
+echo "      Continuing Education:        19 July   2018 (1 Day)"
+echo "      Timezone:               https://www.timeanddate.com/weather/usa/boise"
 echo ""
 echo "   Additional information."
+echo "      https://fusionpbx.com/training.php"
 echo "      https://fusionpbx.com/support.php"
 echo "      https://www.fusionpbx.com"
 echo "      http://docs.fusionpbx.com"

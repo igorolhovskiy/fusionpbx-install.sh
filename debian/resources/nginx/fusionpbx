@@ -1,5 +1,5 @@
 
-server{
+server {
 	listen 127.0.0.1:80;
 	server_name 127.0.0.1;
 	access_log /var/log/nginx/access.log;
@@ -14,7 +14,7 @@ server{
 	}
 
 	location ~ \.php$ {
-		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
 		#fastcgi_pass 127.0.0.1:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
@@ -23,7 +23,7 @@ server{
 
 	# Allow the upgrade routines to run longer than normal
 	location = /core/upgrade/index.php {
-		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
 		#fastcgi_pass 127.0.0.1:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
@@ -46,7 +46,16 @@ server{
 server {
 	listen 80;
 	server_name fusionpbx;
-	if ($uri !~* ^.*provision.*$) {
+
+	#redirect letsencrypt to dehydrated
+	location ^~ /.well-known/acme-challenge {
+		default_type "text/plain";
+		auth_basic "off";
+		alias /var/www/dehydrated;
+	}
+
+	#rewrite rule - send to https with an exception for provisioning
+	if ($uri !~* ^.*(provision|xml_cdr).*$) {
 		rewrite ^(.*) https://$host$1 permanent;
 		break;
 	}
@@ -66,7 +75,7 @@ server {
 
 	#grandstream
 	rewrite "^.*/provision/cfg([A-Fa-f0-9]{12})(\.(xml|cfg))?$" /app/provision/?mac=$1;
-	rewrite "^.*/provision/pb([A-Fa-f0-9-]{12,17})/phonebook\.xml$" /app/provision/?mac=$1&file=phonebook.xml;
+	rewrite "^.*/provision/pb/([A-Fa-f0-9]{12})/phonebook\.xml$" /app/provision/?mac=$1&file=phonebook.xml; 
 	#grandstream-wave softphone by ext because Android doesn't pass MAC.
 	rewrite "^.*/provision/([0-9]{5})/cfg([A-Fa-f0-9]{12}).xml$" /app/provision/?ext=$1;
 
@@ -75,6 +84,7 @@ server {
 	#rewrite "^.*/provision/([A-Fa-f0-9]{12})(\.(cfg))?$" /app/provision/?mac=$1 last;
 
 	#yealink
+	#rewrite "^.*/provision/(y[0-9]{12})(\.cfg|\.boot)?$" /app/provision/index.php?file=$1$2;
 	rewrite "^.*/provision/(y[0-9]{12})(\.cfg)?$" /app/provision/index.php?file=$1.cfg;
 	rewrite "^.*/provision/([A-Fa-f0-9]{12})(\.(xml|cfg))?$" /app/provision/index.php?mac=$1 last;
 
@@ -110,7 +120,7 @@ server {
 	}
 
 	location ~ \.php$ {
-		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
 		#fastcgi_pass 127.0.0.1:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
@@ -119,7 +129,7 @@ server {
 
 	# Allow the upgrade routines to run longer than normal
 	location = /core/upgrade/index.php {
-		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
 		#fastcgi_pass 127.0.0.1:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
@@ -147,11 +157,14 @@ server {
 	ssl_certificate_key     /etc/ssl/private/nginx.key;
 	ssl_protocols           TLSv1 TLSv1.1 TLSv1.2;
 	ssl_ciphers             HIGH:!ADH:!MD5:!aNULL;
+	#ssl_dhparam
 
-	#letsencrypt
-	location /.well-known/acme-challenge {
-        	root /var/www/letsencrypt;
-    	}
+	#redirect letsencrypt to dehydrated
+	location ^~ /.well-known/acme-challenge {
+		default_type "text/plain";
+		auth_basic "off";
+		alias /var/www/dehydrated;
+	}
 
 	#REST api
 	if ($uri ~* ^.*/api/.*$) {
@@ -168,7 +181,7 @@ server {
 
 	#grandstream
 	rewrite "^.*/provision/cfg([A-Fa-f0-9]{12})(\.(xml|cfg))?$" /app/provision/?mac=$1;
-	rewrite "^.*/provision/pb([A-Fa-f0-9-]{12,17})/phonebook\.xml$" /app/provision/?mac=$1&file=phonebook.xml;
+	rewrite "^.*/provision/pb/([A-Fa-f0-9]{12})/phonebook\.xml$" /app/provision/?mac=$1&file=phonebook.xml; 
 	#grandstream-wave softphone by ext because Android doesn't pass MAC.
 	rewrite "^.*/provision/([0-9]{5})/cfg([A-Fa-f0-9]{12}).xml$" /app/provision/?ext=$1;
 
@@ -177,6 +190,7 @@ server {
 	#rewrite "^.*/provision/([A-Fa-f0-9]{12})(\.(cfg))?$" /app/provision/?mac=$1 last;
 
 	#yealink
+	#rewrite "^.*/provision/(y[0-9]{12})(\.cfg|\.boot)?$" /app/provision/index.php?file=$1$2;
 	rewrite "^.*/provision/(y[0-9]{12})(\.cfg)?$" /app/provision/index.php?file=$1.cfg;
 	rewrite "^.*/provision/([A-Fa-f0-9]{12})(\.(xml|cfg))?$" /app/provision/index.php?mac=$1 last;
 
@@ -212,7 +226,7 @@ server {
 	}
 
 	location ~ \.php$ {
-		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
 		#fastcgi_pass 127.0.0.1:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
@@ -221,7 +235,7 @@ server {
 
 	# Allow the upgrade routines to run longer than normal
 	location = /core/upgrade/index.php {
-		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
 		#fastcgi_pass 127.0.0.1:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
