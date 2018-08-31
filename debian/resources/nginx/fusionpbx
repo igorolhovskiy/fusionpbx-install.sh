@@ -31,16 +31,10 @@ server {
 		fastcgi_read_timeout 15m;
 	}
 
-	# Disable viewing .htaccess & .htpassword & .db
-	location ~ .htaccess {
-			deny all;
-	}
-	location ~ .htpassword {
-			deny all;
-	}
-	location ~^.+.(db)$ {
-			deny all;
-	}
+	# Disable viewing all . (.htaccess, .git, etc...) except .well-known
+	location ~ /\.(?!well-known\/) {
+        deny all;
+    }
 }
 
 server {
@@ -137,16 +131,10 @@ server {
 		fastcgi_read_timeout 15m;
 	}
 
-	# Disable viewing .htaccess & .htpassword & .db
-	location ~ .htaccess {
-		deny all;
-	}
-	location ~ .htpassword {
-		deny all;
-	}
-	location ~^.+.(db)$ {
-		deny all;
-	}
+	# Disable viewing all . (.htaccess, .git, etc...) except .well-known
+	location ~ /\.(?!well-known\/) {
+        deny all;
+    }
 }
 
 server {
@@ -243,14 +231,8 @@ server {
 		fastcgi_read_timeout 15m;
 	}
 
-	# Disable viewing .htaccess & .htpassword & .db
-	location ~ .htaccess {
-		deny all;
-	}
-	location ~ .htpassword {
-		deny all;
-	}
-	location ~^.+.(db)$ {
-		deny all;
-	}
+	# Disable viewing all . (.htaccess, .git, etc...) except .well-known
+	location ~ /\.(?!well-known\/) {
+        deny all;
+    }
 }
