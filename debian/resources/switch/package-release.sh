@@ -10,12 +10,17 @@ cd "$(dirname "$0")"
 
 apt-get update && apt-get install -y --force-yes curl memcached haveged apt-transport-https
 if [ ."$cpu_architecture" = ."arm" ]; then
-        echo "deb https://repo.fusionpbx.com/armhf jessie 1.6.20" > /etc/apt/sources.list.d/freeswitch.list
-        curl https://repo.fusionpbx.com/public.key | apt-key add -
+        if [ ."$os_codename" = ."stretch" ]; then
+		echo "deb https://repo.fusionpbx.com/armhf stretch 1.8.2" > /etc/apt/sources.list.d/freeswitch.list
+        	curl https://repo.fusionpbx.com/public.key | apt-key add -
+        else
+		echo "deb https://repo.fusionpbx.com/armhf jessie 1.6.20" > /etc/apt/sources.list.d/freeswitch.list
+        	curl https://repo.fusionpbx.com/public.key | apt-key add -
+        fi
 else
         if [ ."$os_codename" = ."stretch" ]; then
-                echo "deb https://repo.fusionpbx.com/armhf stretch 1.6.20" > /etc/apt/sources.list.d/freeswitch.list
-                curl https://repo.fusionpbx.com/public.key | apt-key add -
+                wget -qO - http://files.freeswitch.org/repo/deb/freeswitch-1.8/fsstretch-archive-keyring.gpg | apt-key add -
+                echo "deb http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main" > /etc/apt/sources.list.d/freeswitch.list      
         else
                 echo "deb http://files.freeswitch.org/repo/deb/freeswitch-1.6/ jessie main" > /etc/apt/sources.list.d/freeswitch.list
                 curl http://files.freeswitch.org/repo/deb/freeswitch-1.6/key.gpg | apt-key add -
@@ -32,8 +37,10 @@ apt-get install -y --force-yes freeswitch-mod-sndfile freeswitch-mod-native-file
 apt-get install -y --force-yes freeswitch-mod-xml-cdr freeswitch-mod-verto freeswitch-mod-callcenter freeswitch-mod-rtc freeswitch-mod-png freeswitch-mod-json-cdr freeswitch-mod-shout
 apt-get install -y --force-yes freeswitch-mod-sms freeswitch-mod-sms-dbg freeswitch-mod-cidlookup freeswitch-mod-memcache
 apt-get install -y --force-yes freeswitch-mod-imagick freeswitch-mod-tts-commandline freeswitch-mod-directory
-apt-get install -y --force-yes freeswitch-mod-skypopen freeswitch-mod-skypopen-dbg freeswitch-mod-flite libyuv-dev freeswitch-mod-distributor freeswitch-meta-codecs
+apt-get install -y --force-yes freeswitch-mod-flite freeswitch-mod-distributor freeswitch-meta-codecs
+apt-get install -y --force-yes freeswitch-mod-skypopen freeswitch-mod-skypopen-dbg
 apt-get install -y --force-yes freeswitch-music-default
+apt-get install -y --force-yes libyuv-dev
 
 #make sure that postgresql is started before starting freeswitch
 sed -i /lib/systemd/system/freeswitch.service -e s:'local-fs.target:local-fs.target postgresql.service:'

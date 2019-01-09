@@ -22,6 +22,14 @@ export PGPASSWORD=$database_password
 sudo -u postgres psql -c "ALTER USER fusionpbx WITH PASSWORD '$database_password';"
 sudo -u postgres psql -c "ALTER USER freeswitch WITH PASSWORD '$database_password';"
 
+#install the database backup
+cp backup/fusionpbx-backup /etc/cron.daily
+cp backup/fusionpbx-maintenance /etc/cron.daily
+chmod 755 /etc/cron.daily/fusionpbx-backup
+chmod 755 /etc/cron.daily/fusionpbx-maintenance
+sed -i "s/zzz/$database_password/g" /etc/cron.daily/fusionpbx-backup
+sed -i "s/zzz/$database_password/g" /etc/cron.daily/fusionpbx-maintenance
+
 #add the config.php
 mkdir -p /etc/fusionpbx
 chown -R www-data:www-data /etc/fusionpbx
@@ -107,10 +115,10 @@ echo "      Fastest way to learn FusionPBX. For more information https://www.fus
 echo "      Available online and in person. Includes documentation and recording."
 echo ""
 echo "      Location:               Online"
-echo "      Admin Training:          7 -  9 August 2018 (3 Days)"
-echo "      Advanced Training:      21 - 22 August 2018 (2 Days)"
-echo "      Continuing Education:        19 July   2018 (1 Day)"
-echo "      Timezone:               https://www.timeanddate.com/weather/usa/boise"
+echo "      Admin Training:          21-23 January 2019 (3 Days)"
+echo "      Advanced Training:       24-25 January 2019 (2 Days)"
+echo "      Continuing Education:    20 December 2018 (1 Day)"
+echo "      Timezone:               https://www.timeanddate.com/weather/usa/idaho"
 echo ""
 echo "   Additional information."
 echo "      https://fusionpbx.com/training.php"

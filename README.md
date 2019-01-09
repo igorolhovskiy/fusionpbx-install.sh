@@ -5,8 +5,9 @@ A quick install guide for a FusionPBX install. It is recommended to start the in
 Fork for samael33 version (actually change git links) is done only for debian.
 
 
+## Operating Systems
 ### Debian
-Debian 8 is the preferred operating system by the FreeSWITCH developers. It supports the latest video dependencies. If you want to do video mixing use Debian. Download Debian 8 Jessie from here https://cdimage.debian.org/cdimage/archive/
+Debian 9 is the preferred operating system by the FreeSWITCH developers. It supports the latest video dependencies and should be used if you want to do video mixing. Download Debian 9 Stretch at https://cdimage.debian.org/cdimage/release/current/
 
 ```sh
 wget -O - https://raw.githubusercontent.com/samael33/fusionpbx-install.sh/master/debian/pre-install.sh | sh
@@ -14,7 +15,7 @@ cd /usr/src/fusionpbx-install.sh/debian && ./install.sh
 ```
 ### Devuan
 If you like Debian but rather not bother with systemd, Devuan is a "drop in" replacement.
-Version 1 is bassed on Jessie. So you will find the same packages available.
+Devuan ASCII is based on Stretch, so you will find most of the same packages available.
 Please note that the source installation and installation on ARM is not fully tested.
 
 ```sh
@@ -46,10 +47,13 @@ cd /usr/src/fusionpbx-install.sh/centos && ./install.sh
 *  Click to download the zip file and extract it.
 *  Extract the zip file
 *  Navigate to install.ps1
-*  Click on install.ps1 then right click on install.ps1 then choose Run with Powershell 
+*  Click on install.ps1 then right click on install.ps1 then choose Run with Powershell
 *  If you are not already Administrator you will have to choose run as Administrator
 
 ```sh
 
 Master https://github.com/samael33/fusionpbx-install.sh/archive/master.zip
 ```
+
+## Security Considerations
+Fail2ban is installed and pre-configured for all operating systems this repository works on besides Windows, but the default settings may not be ideal depending on your needs. Please take a look at the jail file (/etc/fail2ban/jail.local on Debian/Devuan) to configure it to suit your application and security model!

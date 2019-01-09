@@ -40,8 +40,8 @@ fi
 
 #add PostgreSQL and 2ndquadrant repos
 if [ ."$database_repo" = ."2ndquadrant" ]; then
-	echo 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main' > /etc/apt/sources.list.d/postgresql.list
-	echo 'deb http://packages.2ndquadrant.com/bdr/apt/ jessie-2ndquadrant main' > /etc/apt/sources.list.d/2ndquadrant.list
+	echo "deb http://apt.postgresql.org/pub/repos/apt/ $os_codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+	echo "deb http://packages.2ndquadrant.com/bdr/apt/ $os_codename-2ndquadrant main" > /etc/apt/sources.list.d/2ndquadrant.list
 	/usr/bin/wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
 	/usr/bin/wget --quiet -O - http://packages.2ndquadrant.com/bdr/apt/AA7A6805.asc | apt-key add -
 	apt-get update && apt-get upgrade -y
@@ -57,12 +57,12 @@ systemctl restart postgresql
 #/usr/sbin/service postgresql restart
 
 #install the database backup
-cp backup/fusionpbx-backup.sh /etc/cron.daily
-cp backup/fusionpbx-maintenance.sh /etc/cron.daily
-chmod 755 /etc/cron.daily/fusionpbx-backup.sh
-chmod 755 /etc/cron.daily/fusionpbx-maintenance.sh
-sed -i "s/zzz/$password/g" /etc/cron.daily/fusionpbx-backup.sh
-sed -i "s/zzz/$password/g" /etc/cron.daily/fusionpbx-maintenance.sh
+#cp backup/fusionpbx-backup /etc/cron.daily
+#cp backup/fusionpbx-maintenance /etc/cron.daily
+#chmod 755 /etc/cron.daily/fusionpbx-backup
+#chmod 755 /etc/cron.daily/fusionpbx-maintenance
+#sed -i "s/zzz/$password/g" /etc/cron.daily/fusionpbx-backup
+#sed -i "s/zzz/$password/g" /etc/cron.daily/fusionpbx-maintenance
 
 #move to /tmp to prevent a red herring error when running sudo with psql
 cwd=$(pwd)
