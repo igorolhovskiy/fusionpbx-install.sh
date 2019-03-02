@@ -112,10 +112,13 @@ group_uuid=$(psql --host=$database_host --port=$database_port --username=$databa
 group_uuid=$(echo $group_uuid | sed 's/^[[:blank:]]*//;s/[[:blank:]]*$//')
 
 #add the user to the group
-group_user_uuid=$(/usr/bin/php /var/www/fusionpbx/resources/uuid.php);
+user_group_uuid=$(/usr/bin/php /var/www/fusionpbx/resources/uuid.php);
 group_name=superadmin
-psql --host=$database_host --port=$database_port --username=$database_username -c "insert into v_group_users (group_user_uuid, domain_uuid, group_name, group_uuid, user_uuid) values('$group_user_uuid', '$domain_uuid', '$group_name', '$group_uuid', '$user_uuid');"
-
+if [ .$system_branch = .'master' ]; then
+	psql --host=$database_host --port=$database_port --username=$database_username -c "insert into v_user_groups (user_group_uuid, domain_uuid, group_name, group_uuid, user_uuid) values('$user_group_uuid', '$domain_uuid', '$group_name', '$group_uuid', '$user_uuid');"
+else
+	psql --host=$database_host --port=$database_port --username=$database_username -c "insert into v_group_users (group_user_uuid, domain_uuid, group_name, group_uuid, user_uuid) values('$user_group_uuid', '$domain_uuid', '$group_name', '$group_uuid', '$user_uuid');"
+fi	
 #update xml_cdr url, user and password
 xml_cdr_username=$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 | sed 's/[=\+//]//g')
 xml_cdr_password=$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 | sed 's/[=\+//]//g')
@@ -149,9 +152,9 @@ echo "      Fastest way to learn FusionPBX. For more information https://www.fus
 echo "      Available online and in person. Includes documentation and recording."
 echo ""
 echo "      Location:               Online"
-echo "      Admin Training:          21-23 January 2019 (3 Days)"
-echo "      Advanced Training:       24-25 January 2019 (2 Days)"
-echo "      Continuing Education:    20 December 2018 (1 Day)"
+echo "      Admin Training:          12-14 March 2019 (3 Days)"
+echo "      Advanced Training:       19-20 March 2019 (2 Days)"
+echo "      Continuing Education:    28 February 2019 (1 Day)"
 echo "      Timezone:               https://www.timeanddate.com/weather/usa/idaho"
 echo ""
 echo "   Additional information."
