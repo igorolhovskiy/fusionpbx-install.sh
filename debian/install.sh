@@ -13,7 +13,7 @@ sed -i '/cdrom:/d' /etc/apt/sources.list
 
 #Update to latest packages
 verbose "Update installed packages"
-apt-get update && apt-get upgrade -y --force-yes
+apt-get update && apt-get upgrade -y
 
 #Add dependencies
 apt-get install -y wget
@@ -38,11 +38,11 @@ resources/sngrep.sh
 #FusionPBX
 resources/fusionpbx.sh
 
-#NGINX web server
-resources/nginx.sh
-
 #PHP
 resources/php.sh
+
+#NGINX web server
+resources/nginx.sh
 
 #Fail2ban
 resources/fail2ban.sh
@@ -55,24 +55,6 @@ resources/postgresql.sh
 
 #set the ip address
 server_address=$(hostname -I)
-
-#restart services
-systemctl daemon-reload
-if [ ."$php_version" = ."5.6" ]; then
-        service php5-fpm restart
-fi
-if [ ."$php_version" = ."7.0" ]; then
-        service php7.0-fpm restart
-fi
-if [ ."$php_version" = ."7.1" ]; then
-        service php7.1-fpm restart
-fi
-if [ ."$php_version" = ."7.2" ]; then
-        service php7.2-fpm restart
-fi
-
-service nginx restart
-service fail2ban restart
 
 #add the database schema, user and groups
 resources/finish.sh

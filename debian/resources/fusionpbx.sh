@@ -11,8 +11,8 @@ cd "$(dirname "$0")"
 verbose "Installing FusionPBX"
 
 #install dependencies
-apt-get install -y --force-yes vim git dbus haveged ssl-cert qrencode
-apt-get install -y --force-yes ghostscript libtiff5-dev libtiff-tools at
+apt-get install -y vim git dbus haveged ssl-cert qrencode
+apt-get install -y ghostscript libtiff5-dev libtiff-tools at
 
 #get the branch
 if [ .$system_branch = .'master' ]; then
@@ -25,6 +25,10 @@ else
 	verbose "Using version $system_version"
 	branch="-b $system_version"
 fi
+
+#add the cache directory
+mkdir -p /var/cache/fusionpbx
+chown -R www-data:www-data /var/cache/fusionpbx
 
 #get the source code
 git clone $branch https://github.com/samael33/fusionpbx.git /var/www/fusionpbx
