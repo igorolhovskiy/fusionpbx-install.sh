@@ -206,6 +206,9 @@ server {
 	rewrite "^.*/provision/VCS754_([A-Fa-f0-9]{12})\.cfg$" /app/provision/?mac=$1;
 	rewrite "^.*/provision/pb([A-Fa-f0-9-]{12,17})/directory\.xml$" /app/provision/?mac=$1&file=directory.xml;
 
+	#Snom OVPN config
+    rewrite "^.*/provision/([A-Fa-f0-9]{12})-snomovpn.tar$" /app/provision/?mac=$1&file=ovpn.tar last;
+
 	#Snom Dect M200 SC
 	rewrite "^.*/provision/M200SC.cfg$" /app/provision/?mac=$1&file=M200SC.cfg;
 	rewrite "^.*/provision/M200SC_([A-F0-9]{12})\.cfg$" /app/provision/?mac=$1 last;
