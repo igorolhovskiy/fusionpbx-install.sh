@@ -45,7 +45,7 @@ fi
 #manual dns hook
 if [ .$wilcard_domain = ."true" ]; then
     cd /usr/src
-    git clone https://github.com/owhen/dns-01-manual.git
+    git clone https://github.com/gheja/dns-01-manual.git
     cd /usr/src/dns-01-manual/
     cp hook.sh /etc/dehydrated/hook.sh
     chmod 755 /etc/dehydrated/hook.sh
@@ -58,8 +58,8 @@ cp docs/examples/config /etc/dehydrated
 
 #update the dehydrated config
 #sed "s#CONTACT_EMAIL=#CONTACT_EMAIL=$email_address" -i /etc/dehydrated/config
-sed -i' ' -e s:'#CONTACT_EMAIL=":CONTACT_EMAIL=$email_address:' /etc/dehydrated/config
-sed -i' ' -e s:'#WELLKNOWN="/var/www/dehydrated":WELLKNOWN="/var/www/dehydrated":' /etc/dehydrated/config
+sed -i 's/#CONTACT_EMAIL=/CONTACT_EMAIL="'"$email_address"'"/g' /etc/dehydrated/config
+sed -i 's/#WELLKNOWN=/WELLKNOWN=/g' /etc/dehydrated/config
 
 #accept the terms
 dehydrated --register --accept-terms --config /etc/dehydrated/config

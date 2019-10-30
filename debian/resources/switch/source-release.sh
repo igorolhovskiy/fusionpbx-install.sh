@@ -6,18 +6,15 @@ cd "$(dirname "$0")"
 #includes
 . ../config.sh
 
-# add repo key
-wget -O - https://files.freeswitch.org/repo/deb/freeswitch-1.8/fsstretch-archive-keyring.asc | apt-key add -
-
-# add repo
-echo "deb  http://files.freeswitch.org/repo/deb/freeswitch-1.8/  stretch main" > /etc/apt/sources.list.d/freeswitch.list
-echo "deb-src  http://files.freeswitch.org/repo/deb/freeswitch-1.8/  stretch main" >> /etc/apt/sources.list.d/freeswitch.list
-
 #upgrade packages
 apt update && apt upgrade -y
 
 # install dependencies
-apt build-dep freeswitch -y
+apt install -y autoconf automake devscripts g++ git-core libncurses5-dev libtool make libjpeg-dev 
+apt install -y pkg-config flac  libgdbm-dev libdb-dev gettext sudo equivs mlocate git dpkg-dev libpq-dev
+apt install -y liblua5.2-dev libtiff5-dev libperl-dev libcurl4-openssl-dev libsqlite3-dev libpcre3-dev
+apt install -y devscripts libspeexdsp-dev libspeex-dev libldns-dev libedit-dev libopus-dev libmemcached-dev
+apt install -y libshout3-dev libmpg123-dev libmp3lame-dev yasm nasm libsndfile1-dev libuv1-dev libvpx-dev libvpx4
 
 # additional dependencies
 apt install -y sqlite3 swig3.0 unzip
@@ -41,8 +38,13 @@ sed -i /usr/src/freeswitch/modules.conf -e s:'#applications/mod_avmd:application
 sed -i /usr/src/freeswitch/modules.conf -e s:'#applications/mod_callcenter:applications/mod_callcenter:'
 sed -i /usr/src/freeswitch/modules.conf -e s:'#applications/mod_cidlookup:applications/mod_cidlookup:'
 sed -i /usr/src/freeswitch/modules.conf -e s:'#applications/mod_memcache:applications/mod_memcache:'
+sed -i /usr/src/freeswitch/modules.conf -e s:'#applications/mod_nibblebill:applications/mod_nibblebill:'
 sed -i /usr/src/freeswitch/modules.conf -e s:'#applications/mod_curl:applications/mod_curl:'
 sed -i /usr/src/freeswitch/modules.conf -e s:'#formats/mod_shout:formats/mod_shout:'
+sed -i /usr/src/freeswitch/modules.conf -e s:'#formats/mod_pgsql:formats/mod_pgsql:'
+
+#disable module or install dependency libks to compile signalwire
+sed -i /usr/src/freeswitch/modules.conf -e s:'applications/mod_signalwire:#applications/mod_signalwire:'
 
 # prepare the build
 #./configure --prefix=/usr/local/freeswitch --enable-core-pgsql-support --disable-fhs

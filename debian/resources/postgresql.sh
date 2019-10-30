@@ -24,9 +24,20 @@ fi
 
 #postgres official repository
 if [ ."$database_repo" = ."official" ]; then
-	echo "deb http://apt.postgresql.org/pub/repos/apt/ $os_codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
-	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-	apt-get update && apt-get upgrade -y
+	if [ ."$os_codename" = ."jessie" ]; then
+		echo "deb http://apt.postgresql.org/pub/repos/apt/ $os_codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+		wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+		apt-get update && apt-get upgrade -y
+	fi
+	if [ ."$os_codename" = ."stretch" ]; then
+		echo "deb http://apt.postgresql.org/pub/repos/apt/ $os_codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+		wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+		apt-get update && apt-get upgrade -y
+	fi
+	if [ ."$os_codename" = ."buster" ]; then
+		echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+		wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+	fi
 	if [ ."$database_version" = ."latest" ]; then
                 apt-get install -y sudo postgresql
 	fi
@@ -40,14 +51,10 @@ fi
 
 #add PostgreSQL and 2ndquadrant repos
 if [ ."$database_repo" = ."2ndquadrant" ]; then
-	echo "deb http://apt.postgresql.org/pub/repos/apt/ $os_codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
-	echo "deb http://packages.2ndquadrant.com/bdr/apt/ $os_codename-2ndquadrant main" > /etc/apt/sources.list.d/2ndquadrant.list
-	/usr/bin/wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
-	/usr/bin/wget --quiet -O - http://packages.2ndquadrant.com/bdr/apt/AA7A6805.asc | apt-key add -
-	apt-get update && apt-get upgrade -y
+	apt install -y curl
+	curl https://dl.2ndquadrant.com/default/release/get/deb | bash
 	apt-get install -y sudo postgresql-bdr-9.4 postgresql-bdr-9.4-bdr-plugin postgresql-bdr-contrib-9.4
 fi
-
 
 #systemd
 systemctl daemon-reload
