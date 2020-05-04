@@ -9,7 +9,8 @@ cd "$(dirname "$0")"
 . ../environment.sh
 
 apt-get update && apt-get install -y curl memcached haveged apt-transport-https
-apt-get update && apt-get install -y wget lsb-release gnupg2
+apt-get update && apt-get install -y gnupg gnupg2
+apt-get update && apt-get install -y wget lsb-release
 
 if [ ."$cpu_architecture" = ."x86" ]; then
 	wget -O - https://files.freeswitch.org/repo/deb/debian-release/fsstretch-archive-keyring.asc | apt-key add -
@@ -34,7 +35,6 @@ apt-get install -y freeswitch-mod-xml-cdr freeswitch-mod-verto freeswitch-mod-ca
 apt-get install -y freeswitch-mod-sms freeswitch-mod-sms-dbg freeswitch-mod-cidlookup freeswitch-mod-memcache
 apt-get install -y freeswitch-mod-imagick freeswitch-mod-tts-commandline freeswitch-mod-directory
 apt-get install -y freeswitch-mod-flite freeswitch-mod-distributor freeswitch-meta-codecs
-apt-get install -y freeswitch-mod-skypopen freeswitch-mod-skypopen-dbg
 apt-get install -y freeswitch-mod-pgsql
 apt-get install -y freeswitch-music-default
 apt-get install -y libyuv-dev

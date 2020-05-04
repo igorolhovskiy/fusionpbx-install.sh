@@ -33,4 +33,3 @@ chown -R www-data:www-data /var/cache/fusionpbx
 #get the source code
 git clone $branch https://github.com/samael33/fusionpbx.git /var/www/fusionpbx
 chown -R www-data:www-data /var/www/fusionpbx
-chmod -R 755 /var/www/fusionpbx/secure
