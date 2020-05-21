@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 . ../config.sh
 
 #install dependencies
-pkg install --yes tiff memcached
+pkg install --yes tiff ghostscript9-base memcached
 
 #set the current working directory
 cwd=$(pwd)
@@ -15,12 +15,13 @@ cwd=$(pwd)
 #send a message
 echo "Installing the FreeSWITCH package"
 
-#get the package
-cd /usr/src && fetch https://www.fusionpbx.com/downloads/freebsd11/freeswitch-pgsql10-1.6.19_2.txz
-
 #install the package
-#pkg install --yes freeswitch
-pkg install --yes /usr/src/freeswitch-pgsql10-1.6.19_2.txz
+if [ .$portsnap_enabled = .'true' ]; then
+	#dbatch uses the defaults alternative is make config-recursive
+	cd /usr/ports/net/freeswitch/ && make -DBATCH install clean
+else
+	pkg install --yes freeswitch
+fi
 
 #set the original working directory
 cd $cwd

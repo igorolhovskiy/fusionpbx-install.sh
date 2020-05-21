@@ -11,6 +11,12 @@ cd "$(dirname "$0")"
 #send a message
 verbose "Configuring IPTables"
 
+#defaults to nftables by default this enables iptables
+if [ ."$os_codename" = ."buster" ]; then
+	update-alternatives --set iptables /usr/sbin/iptables-legacy
+	update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+fi
+
 #run iptables commands
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
