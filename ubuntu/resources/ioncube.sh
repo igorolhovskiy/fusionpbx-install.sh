@@ -19,7 +19,7 @@ fi
 #get the ioncube load and unzip it
 if [ .$cpu_architecture = .'x86' ]; then
 	#get the ioncube 64 bit loader
-	wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.zip
+	wget --no-check-certificate https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.zip
 
 	#uncompress the file
 	unzip ioncube_loaders_lin_x86-64.zip
@@ -29,7 +29,7 @@ if [ .$cpu_architecture = .'x86' ]; then
 elif [ ."$cpu_architecture" = ."arm" ]; then
 	if [ .$cpu_name = .'armv7l' ]; then
 		#get the ioncube 64 bit loader
-		wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_armv7l.zip
+		wget --no-check-certificate https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_armv7l.zip
 
 		#uncompress the file
 		unzip ioncube_loaders_lin_armv7l.zip
@@ -72,10 +72,11 @@ if [ ."$php_version" = ."7.1" ]; then
 fi
 if [ ."$php_version" = ."7.2" ]; then
         #copy the php extension .so into the php lib directory
-        cp ioncube/ioncube_loader_lin_7.2.so /usr/lib/php/20160303
+        cp ioncube/ioncube_loader_lin_7.2.so /usr/lib/php/20170718
 
         #add the 00-ioncube.ini file
-        echo "zend_extension = /usr/lib/php/20160303/ioncube_loader_lin_7.2.so" > /etc/php/7.2/fpm/conf.d/00-ioncube.ini
+        echo "zend_extension = /usr/lib/php/20170718/ioncube_loader_lin_7.2.so" > /etc/php/7.2/fpm/conf.d/00-ioncube.ini
+	echo "zend_extension = /usr/lib/php/20170718/ioncube_loader_lin_7.2.so" > /etc/php/7.2/cli/conf.d/00-ioncube.ini
 
         #restart the service
         service php7.2-fpm restart

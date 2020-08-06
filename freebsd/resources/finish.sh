@@ -32,6 +32,7 @@ if [ .$nginx_enabled = .'true' ]; then
 	mkdir -p /etc/fusionpbx
 	chown -R www:www /etc/fusionpbx
 	cp fusionpbx/config.php /etc/fusionpbx
+	sed -i' ' -e s:"{database_host}:$database_host:" /etc/fusionpbx/config.php
 	sed -i' ' -e s:'{database_username}:fusionpbx:' /etc/fusionpbx/config.php
 	sed -i' ' -e s:"{database_password}:$database_password:" /etc/fusionpbx/config.php
 
@@ -157,7 +158,7 @@ echo ""
 echo "      Location:               Online"
 echo "      Admin Training:          TBA"
 echo "      Advanced Training:       TBA"
-echo "      Continuing Education:    28th May 2020 (1 Day)"
+echo "      Continuing Education:    27th August 2020 (1 Day)"
 echo "      Timezone:               https://www.timeanddate.com/weather/usa/idaho"
 echo ""
 echo "   Additional information."
